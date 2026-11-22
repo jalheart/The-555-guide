@@ -1,0 +1,6 @@
+{
+  "name": "555Kit — Interactive 555 Timer IC Workbench",
+  "description": "Interactive offline-first 555 timer IC workbench featuring live breadboard & schematic wiring diagrams, RC simulation oscilloscope, and 10 hands-on application circuits.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}

@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>555Kit — Interactive 555 Timer IC Workbench</title>
+    <meta
+      name="description"
+      content="Explore the 555 timer IC with interactive breadboard and schematic wiring diagrams, real-time RC waveform oscilloscope, and 10 practical circuits. Works 100% offline."
+    />
+    <meta property="og:title" content="555Kit — Interactive 555 Timer IC Workbench" />
+    <meta
+      property="og:description"
+      content="Interactive 555 timer IC wiring diagrams, pinout explorer, live RC simulator, and 10 common circuits in pure vanilla JS/HTML/CSS."
+    />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#152232" />
+    <link rel="icon" type="image/svg+xml" href="./icon.svg" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="stylesheet" href="./css/styles.css" />
+    <script defer src="./js/math555.js"></script>
+    <script defer src="./js/circuits.js"></script>
+    <script defer src="./js/audio.js"></script>
+    <script defer src="./js/scope.js"></script>
+    <script defer src="./js/workbench.js"></script>
+    <script defer src="./js/three-vendor.js"></script>
+    <script defer src="./js/workbench3d.js"></script>
+    <script defer src="./js/i18n.js"></script>
+    <script defer src="./js/app.js"></script>
+  </head>
+  <body>
+    <div id="app" class="app-shell">
+      <header class="topbar" role="banner">
+        <div class="topbar-brand">
+          <a href="#pinout" class="brand-link" id="brand-home" aria-label="555Kit — return to Step 1">
+            <span class="brand-mark" aria-hidden="true">
+              <svg viewBox="0 0 32 32" width="28" height="28">
+                <rect x="6" y="4" width="20" height="24" rx="3" fill="#152232" />
+                <path d="M13 4 A3 3 0 0 0 19 4" fill="#F4B936" />
+                <g fill="#D6DCE5">
+                  <rect x="2" y="7" width="4" height="3" rx="0.7" />
+                  <rect x="2" y="12.5" width="4" height="3" rx="0.7" />
+                  <rect x="2" y="18" width="4" height="3" rx="0.7" />
+                  <rect x="2" y="23.5" width="4" height="3" rx="0.7" />
+                  <rect x="26" y="7" width="4" height="3" rx="0.7" />
+                  <rect x="26" y="12.5" width="4" height="3" rx="0.7" />
+                  <rect x="26" y="18" width="4" height="3" rx="0.7" />
+                  <rect x="26" y="23.5" width="4" height="3" rx="0.7" />
+                </g>
+                <text x="16" y="19" text-anchor="middle" fill="#F4B936" font-family="ui-monospace, monospace" font-size="8.5" font-weight="700">555</text>
+              </svg>
+            </span>
+            <span class="brand-wordmark">555KIT</span>
+          </a>
+        </div>
+
+        <nav class="topbar-nav" aria-label="Workbench quick sections">
+          <button type="button" class="nav-link" data-jump-step="0">Pinout</button>
+          <button type="button" class="nav-link" data-jump-step="1">Inside 555</button>
+          <button type="button" class="nav-link" data-jump-step="2">Astable</button>
+          <button type="button" class="nav-link" data-jump-step="3">Monostable</button>
+          <button type="button" class="nav-link" data-jump-step="5">Applications</button>
+        </nav>
+
+        <div class="topbar-actions">
+          <button
+            type="button"
+            class="btn-icon-toggle"
+            id="btn-theme-toggle"
+            aria-label="Switch to dark theme"
+            aria-pressed="false"
+            title="Switch to dark theme"
+          >
+            <svg id="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+            </svg>
+            <svg id="icon-sun" class="hidden" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="5" />
+              <line x1="12" y1="1" x2="12" y2="3" />
+              <line x1="12" y1="21" x2="12" y2="23" />
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+              <line x1="1" y1="12" x2="3" y2="12" />
+              <line x1="21" y1="12" x2="23" y2="12" />
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+            </svg>
+          </button>
+          <button
+            type="button"
+            class="btn-lang-toggle"
+            id="btn-lang-toggle"
+            aria-label="Switch language (EN / ES)"
+            title="Switch language / Cambiar idioma (EN / ES)"
+          >ES</button>
+          <button
+            type="button"
+            class="btn-primary-action"
+            id="btn-download-offline"
+            title="Save a single self-contained HTML file that runs without a server on any device"
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+            <span id="btn-download-offline-label">Save Offline</span>
+          </button>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <nav class="step-strip-wrap" aria-label="Circuit tutorial steps">
+          <button type="button" class="strip-arrow" id="btn-strip-prev" aria-label="Scroll earlier steps">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
+          </button>
+          <ol class="step-strip" id="step-strip"></ol>
+          <button type="button" class="strip-arrow" id="btn-strip-next" aria-label="Scroll later steps">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
+          </button>
+        </nav>
+
+        <div class="workspace-split">
+          <aside class="inspector-column" aria-label="Circuit guide and controls">
+            <div class="inspector-card">
+              <div class="inspector-header">
+                <span class="step-badge" id="inspector-badge">01</span>
+                <div class="inspector-heading-meta">
+                  <span class="step-kicker" id="inspector-kicker">FOUNDATIONS · STEP 1 OF 10</span>
+                  <h2 class="step-title" id="inspector-title">PINOUT &amp; PARTS</h2>
+                </div>
+              </div>
+
+              <div class="inspector-body" id="inspector-body">
+                <!-- Populated dynamically by app.js -->
+              </div>
+
+              <div class="inspector-footer">
+                <button type="button" class="btn-step-nav" id="btn-step-back">← Back</button>
+                <span class="keyboard-hint" aria-hidden="true">
+                  <kbd>←</kbd> <kbd>→</kbd> <span id="keyboard-hint-text">steps</span>
+                </span>
+                <button type="button" class="btn-step-next" id="btn-step-next">Next: Internal Block →</button>
+              </div>
+            </div>
+          </aside>
+
+          <section class="stage-column" aria-label="Interactive circuit workbench">
+            <div class="workbench-card" data-testid="workbench-stage">
+              <div class="workbench-header">
+                <div class="workbench-title-group">
+                  <span class="workbench-icon" aria-hidden="true">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="7" y="4" width="10" height="16" rx="2" />
+                      <path d="M3 8h4M3 12h4M3 16h4M17 8h4M17 12h4M17 16h4" />
+                    </svg>
+                  </span>
+                  <div>
+                    <h1 class="workbench-title" id="workbench-title">WORKBENCH</h1>
+                    <p class="workbench-subtitle" id="workbench-subtitle">Step 1 · Meet the 555 IC &amp; Parts</p>
+                  </div>
+                </div>
+
+                <div class="workbench-toolbar">
+                  <span class="live-telemetry-line" id="live-telemetry-line">NE555 · 5.0 V · OUT 3.6 V</span>
+                  <div class="segmented-control" role="group" aria-label="Diagram view mode">
+                    <button type="button" class="seg-btn active" id="btn-view-3d" data-view="3d">3D View</button>
+                    <button type="button" class="seg-btn" id="btn-view-schematic" data-view="schematic">Schematic</button>
+                  </div>
+                  <div class="segmented-control" role="group" aria-label="IC variant">
+                    <button type="button" class="seg-btn active" id="btn-ic-ne555" data-ic="NE555" title="Standard bipolar NE555 (Voh ≈ Vcc - 1.4V)">NE555</button>
+                    <button type="button" class="seg-btn" id="btn-ic-tlc555" data-ic="TLC555" title="CMOS TLC555 / LMC555 (rail-to-rail output)">TLC555</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="workbench-canvas-wrap" id="workbench-wrap">
+                <div id="workbench-3d-host" class="workbench-3d-host" data-testid="workbench-3d-host"></div>
+                <div id="workbench-svg-host" class="workbench-svg-host hidden" data-testid="workbench-svg-host"></div>
+
+                <div class="hover-component-tooltip hidden" id="svg-hover-tooltip" role="tooltip"></div>
+
+                <div class="workbench-hud-controls" role="group" aria-label="Workbench controls">
+                  <button type="button" class="hud-btn hud-btn-accent" id="btn-play-pause" aria-label="Pause simulation" title="Play / Pause simulation (Space)">
+                    <svg id="icon-pause" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <rect x="6" y="5" width="4" height="14" rx="1" />
+                      <rect x="14" y="5" width="4" height="14" rx="1" />
+                    </svg>
+                    <svg id="icon-play" class="hidden" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <polygon points="6,4 20,12 6,20" />
+                    </svg>
+                  </button>
+                  <button type="button" class="hud-btn hud-btn-mono" id="btn-speed" aria-label="Simulation speed 1x" title="Cycle simulation speed">1×</button>
+                  <button type="button" class="hud-btn" id="btn-audio-toggle" aria-label="Toggle piezo buzzer audio" aria-pressed="false" title="Toggle piezo buzzer audio">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                      <line x1="22" y1="9" x2="16" y2="15" />
+                      <line x1="16" y1="9" x2="22" y2="15" />
+                    </svg>
+                  </button>
+                  <span class="hud-divider" aria-hidden="true"></span>
+                  <button type="button" class="hud-btn" id="btn-zoom-in" aria-label="Zoom in" title="Zoom in">+</button>
+                  <button type="button" class="hud-btn" id="btn-zoom-out" aria-label="Zoom out" title="Zoom out">−</button>
+                  <button type="button" class="hud-btn" id="btn-zoom-reset" aria-label="Reset camera view" title="Reset view">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+                    </svg>
+                  </button>
+                  <button type="button" class="hud-btn" id="btn-explode-toggle" aria-label="Exploded view" aria-pressed="false" title="Exploded view (E)">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <polygon points="12 2 2 7 12 12 22 7 12 2" />
+                      <polyline points="2 17 12 22 22 17" />
+                      <polyline points="2 12 12 17 22 12" />
+                    </svg>
+                  </button>
+                </div>
+
+                <div class="workbench-readout-pill hidden" id="live-probe-callout" aria-live="polite">
+                  <span class="probe-label" id="probe-title"></span>
+                  <span class="probe-detail" id="probe-detail"></span>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <!-- Component Inspector Modal Dialog -->
+    <div id="part-modal-backdrop" class="part-modal-backdrop hidden" data-testid="part-modal-backdrop">
+      <div
+        id="part-modal"
+        class="part-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="part-modal-title"
+        data-testid="part-modal"
+      >
+        <div class="part-modal-header">
+          <div class="part-modal-heading-group">
+            <span class="part-modal-kicker" id="part-modal-kicker">SELECTED PART</span>
+            <h2 class="part-modal-title" id="part-modal-title">Component</h2>
+          </div>
+          <div class="part-modal-actions">
+            <span class="part-modal-badge" id="part-modal-badge">DIP-8</span>
+            <button type="button" class="part-modal-close" id="btn-modal-close" aria-label="Close">×</button>
+          </div>
+        </div>
+        <div class="part-modal-body">
+          <p class="part-modal-summary" id="part-modal-summary"></p>
+          <dl class="part-specs-list" id="part-modal-specs"></dl>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast-region" class="toast-region" role="status" aria-live="polite"></div>
+  </body>
+</html>

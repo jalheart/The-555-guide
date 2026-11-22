@@ -1,0 +1,19 @@
+{
+  "id": "./",
+  "name": "555Kit — Interactive 555 Timer IC Workbench",
+  "short_name": "555Kit",
+  "description": "Offline-first 555 timer IC workbench with interactive breadboard & schematic wiring diagrams, RC simulator, and 10 circuits.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#FBF8F1",
+  "theme_color": "#152232",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
